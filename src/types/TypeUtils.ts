@@ -11,3 +11,5 @@ export type Awaited<T> = T extends undefined
 export type Opaque<T, TWitness> = T & { [witness]: TWitness };
 
 export type Tuple<T, R extends T[]> = [T, ...R];
+
+export type SetTimeoutReturn = ReturnType<typeof setTimeout>;

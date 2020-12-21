@@ -1,6 +1,6 @@
 import { nil } from "../common/jsopt";
-import { $, makeMatcher, Matcher, _ } from "../common/match";
 import { sexp } from "../sexp";
+import { $, makeMatcher, Matcher, _ } from "./match";
 
 export type option<T> = [T] | null;
 
