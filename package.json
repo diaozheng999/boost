@@ -14,11 +14,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/diaozheng999/nasi-sack"
+    "url": "http://github.com/diaozheng999/boost"
   },
   "module": "dist/esm/index.js",
-  "author": "DAPP Team",
-  "license": "UNLICENSED",
+  "author": "Simon Diao",
+  "license": "MIT",
   "dependencies": {
     "nasi": "^1.2.9",
     "tslib": "^2.0.0",
