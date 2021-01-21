@@ -227,3 +227,11 @@ export function tupfThis<TThis, T extends unknown[], U>(
 export function tupf<T extends unknown[], U>(f: (...args: T) => U): f<T, U> {
   return tupfThis(f, undefined);
 }
+
+export function uncurry2r1<A, B, C>(f: (b: B) => (a: A) => C) {
+  return (a: A, b: B): C => f(b)(a);
+}
+
+export function uncurry2<A, B, C>(f: (a: A) => (b: B) => C) {
+  return (a: A, b: B): C => f(a)(b);
+}

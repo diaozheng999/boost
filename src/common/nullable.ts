@@ -1,6 +1,11 @@
 import { Equality } from "../traits";
-import { serialiser } from "../traits/serialisable";
-import { __opt_curry2r1, __opt_curry3r1 } from "./f";
+import {
+  DeserialisationOutcome,
+  deserialiser,
+  serialiser,
+} from "../traits/serialisable";
+import { uncurry2r1, __opt_curry2r1, __opt_curry3r1 } from "./f";
+import { json } from "./json";
 import { option } from "./option";
 
 export type nullable<T> = T | null;
@@ -76,6 +81,20 @@ export function serialise<T>(
 ): serialiser<nullable<T>> {
   return map(elementSerialiser);
 }
+
+export const serialiseU = uncurry2r1(serialise);
+
+export function deserialiseU<T>(
+  json: json,
+  elementDeserialiser: deserialiser<T>,
+): DeserialisationOutcome<nullable<T>> {
+  if (json === null) {
+    return { success: true, value: null };
+  }
+  return elementDeserialiser(json);
+}
+
+export const deserialise = __opt_curry2r1(deserialiseU);
 
 export function callIf<T, U>(
   f: (value: T) => U,
