@@ -1,5 +1,5 @@
 import { compare, eq } from "../../common";
-import { Box } from "../Box";
+import { Box, unbox } from "../Box";
 
 describe("Box use cases", () => {
   test("A singular reference that updates multiple times", () => {
@@ -88,6 +88,83 @@ describe("comparisons", () => {
       const box0 = new Box(-1);
       const box1 = new Box(100000);
       expect(cmp(box0, box1)).toBe(false);
+    });
+  });
+});
+
+describe("unbox", () => {
+  test("unboxing non-objects", () => {
+    expect(unbox(null)).toBeNull();
+    expect(unbox(undefined)).toBeUndefined();
+    expect(unbox(NaN)).toBe(NaN);
+    expect(unbox(1)).toBe(1);
+    expect(unbox("hallo")).toBe("hallo");
+    expect(unbox(Symbol.iterator)).toBe(Symbol.iterator);
+  });
+
+  describe("shallow", () => {
+    test("nothing to unbox", () => {
+      const boxed = { a: 1 };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.a).toBe(1);
+    });
+
+    test("item to unbox", () => {
+      const boxed = { a: 1, b: new Box(2) };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.a).toBe(1);
+      expect(unboxed.b).toBe(2);
+    });
+    test("many items to unbox", () => {
+      const boxed = { a: 1, b: new Box(2), c: new Box(3) };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.a).toBe(1);
+      expect(unboxed.b).toBe(2);
+      expect(unboxed.c).toBe(3);
+    });
+  });
+
+  describe("deep", () => {
+    test("nothing to unbox", () => {
+      const boxed = { a: { b: 1 } };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.a.b).toBe(1);
+    });
+
+    test("1 level", () => {
+      const boxed = { a: 1, b: { b: new Box(2) } };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.b).toBe(boxed.b);
+      expect(unboxed.a).toBe(1);
+      expect(unboxed.b.b).toBe(2);
+    });
+
+    test("nested boxes", () => {
+      const boxed = { a: 1, b: new Box({ c: new Box(3), d: 4 }) };
+      const boxedb = boxed.b.value;
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.b).toBe(boxed.b);
+      expect(unboxed.b.c).toBe(boxedb.c);
+      expect(unboxed.a).toBe(1);
+      expect(unboxed.b.c).toBe(3);
+      expect(unboxed.b.d).toBe(4);
+    });
+
+    test("many layers", () => {
+      const boxed = { a: 1, b: { c: 3, d: new Box(4) } };
+      const unboxed = unbox(boxed);
+      expect(unboxed).toBe(boxed);
+      expect(unboxed.b).toBe(boxed.b);
+      expect(unboxed.b.d).toBe(boxed.b.d);
+      expect(unboxed.a).toBe(1);
+      expect(unboxed.b.c).toBe(3);
+      expect(unboxed.b.d).toBe(4);
     });
   });
 });

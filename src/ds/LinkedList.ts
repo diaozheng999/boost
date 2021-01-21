@@ -1,5 +1,6 @@
-import { jsopt, nil } from "../common";
+import { key, none, Option, option, some } from "../common";
 import { Comparison, Equality } from "../traits";
+import { LinkedListIterator } from "./LinkedListIterator";
 
 export interface LinkedListNode<T> {
   value: T;
@@ -64,22 +65,22 @@ export class LinkedList<T> {
     this.tail = node;
   }
 
-  public removeFromFront(): jsopt<T> {
+  public removeFromFront(): option<T> {
     if (this.head === undefined) {
-      return;
+      return none();
     }
     const node = this.head;
     this.removeNode(node);
-    return node.value;
+    return some(node.value);
   }
 
-  public removeFromEnd(): jsopt<T> {
+  public removeFromEnd(): option<T> {
     if (this.tail === undefined) {
-      return;
+      return none();
     }
     const node = this.tail;
     this.removeNode(node);
-    return node.value;
+    return some(node.value);
   }
 
   public addToFront(value: T): LinkedListNode<T> {
@@ -119,8 +120,8 @@ export class LinkedList<T> {
   }
 
   public push = (value: T): void => void this.addToEnd(value);
-  public pop = (): jsopt<T> => this.removeFromEnd();
-  public shift = (): jsopt<T> => this.removeFromFront();
+  public pop = (): option<T> => this.removeFromEnd();
+  public shift = (): option<T> => this.removeFromFront();
   public unshift = (value: T): void => void this.addToFront(value);
 
   public removeNode(node: LinkedListNode<T>): void {
@@ -216,39 +217,36 @@ export class LinkedList<T> {
     return newList;
   }
 
-  public nth(idx: number): nil<T> {
+  public nth(idx: number): option<T> {
     const node = this.nthNode(idx);
-    if (node) {
-      return node.value;
-    }
-    return;
+    return Option.mapU(node, key("value"));
   }
 
-  public nthNode(idx: number): nil<LinkedListNode<T>> {
+  public nthNode(idx: number): option<LinkedListNode<T>> {
     if (idx >= 0) {
       return this.nthNodeForward(idx);
     }
     return this.nthNodeReverse(idx);
   }
 
-  private nthNodeForward(idx: number): nil<LinkedListNode<T>> {
+  private nthNodeForward(idx: number): option<LinkedListNode<T>> {
     let i = 0;
     for (let node = this.head; node; node = node.next, ++i) {
       if (i === idx) {
-        return node;
+        return some(node);
       }
     }
-    return;
+    return none();
   }
 
-  private nthNodeReverse(idx: number): nil<LinkedListNode<T>> {
+  private nthNodeReverse(idx: number): option<LinkedListNode<T>> {
     let i = -1;
     for (let node = this.tail; node; node = node.prev, --i) {
       if (i === idx) {
-        return node;
+        return some(node);
       }
     }
-    return;
+    return none();
   }
 
   public mapNode<U>(next: (value: LinkedListNode<T>) => U): LinkedList<U> {
@@ -318,7 +316,7 @@ export class LinkedList<T> {
 
   public splitAt(
     node: LinkedListNode<T>,
-  ): [value: T, prev: jsopt<LinkedList<T>>, next: jsopt<LinkedList<T>>] {
+  ): [value: T, prev: option<LinkedList<T>>, next: option<LinkedList<T>>] {
     const { prev, next, value } = node;
 
     const prevList = prev && this.head && new LinkedList(this.head, prev);
@@ -329,7 +327,15 @@ export class LinkedList<T> {
     next && (next.prev = undefined);
     prev && (prev.next = undefined);
 
-    return [value, prevList, nextList];
+    return [value, Option.ofJS(prevList), Option.ofJS(nextList)];
+  }
+
+  public [Symbol.iterator](): IterableIterator<T> {
+    return new LinkedListIterator(this.head);
+  }
+
+  public iterReverse(): IterableIterator<T> {
+    return new LinkedListIterator(this.tail, true);
   }
 }
 

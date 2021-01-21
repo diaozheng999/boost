@@ -56,6 +56,7 @@ module.exports = {
       {
         selector: "variable",
         format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        trailingUnderscore: "allowSingleOrDouble",
       },
       {
         selector: "function",
@@ -64,8 +65,8 @@ module.exports = {
       },
       {
         selector: "function",
-        filter: "^(UNSAFE_|INTERNAL_|DEPRECATED_)",
-        prefix: ["UNSAFE_", "INTERNAL_", "DEPRECATED_"],
+        filter: "^(UNSAFE_|INTERNAL_|DEPRECATED_|__opt_)",
+        prefix: ["UNSAFE_", "INTERNAL_", "DEPRECATED_", "__opt_"],
         format: ["camelCase"],
       },
       {

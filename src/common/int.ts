@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable no-magic-numbers */
 import { Opaque } from "../types";
-import { nil } from "./jsopt";
+import { option } from "./option";
 
 declare const WordSize: unique symbol;
 declare const Unsigned: unique symbol;
@@ -44,13 +44,23 @@ export function signed(n: uint31): int31 {
   return (n as number) as int31;
 }
 
-export function intOfNumber(n: number): nil<int31> {
+export function intOfNumber(n: number): option<int31> {
   if (n >= INT_MIN && n <= INT_MAX) {
     const i = unsafelyCastToInt(n | 0);
     if (i === n) {
       return i;
     }
-    return null;
   }
   return;
+}
+
+export function finite(n: number): option<number> {
+  return isFinite(n) ? n : undefined;
+}
+
+export function wrapNaN(n: option<number>): option<number> {
+  if (n !== undefined) {
+    return isNaN(n) ? undefined : n;
+  }
+  return n;
 }

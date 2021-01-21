@@ -6,6 +6,10 @@ export function ignore<T>(_f: T): void {
   return;
 }
 
+export function noop(): void {
+  return;
+}
+
 function cimpl<TL extends unknown[], TR extends unknown[], TReturn, TThis>(
   f: (this: TThis, ...args: [...TL, ...TR]) => TReturn,
   thisParameter: TThis,
@@ -24,6 +28,12 @@ export function curry<TL extends unknown[], TR extends unknown[], TReturn>(
   ...applied: TL
 ): (...args: TR) => TReturn {
   return cimpl(f, undefined, applied);
+}
+
+export function mkCurry<T1, TR extends unknown[], TReturn>(
+  f: (v1: T1, ...rest: TR) => TReturn,
+): (v1: T1) => (...rest: TR) => TReturn {
+  return (a) => f.bind(undefined, a);
 }
 
 export function curryThis<
@@ -65,6 +75,40 @@ export function curryThisRight<
   ...applied: TR
 ): (...args: TL) => TReturn {
   return crimpl(f, thisParameter, applied);
+}
+
+/**
+ * Optimised version of `mkCurryRight` for 2 parameters.
+ * @param f function to be curried.
+ */
+export function __opt_curry2r1<A, B, TReturn>(
+  f: (a: A, b: B) => TReturn,
+): (b: B) => (a: A) => TReturn {
+  return (b) => (a) => f(a, b);
+}
+
+export function __opt_curry3r1<A, B, C, TReturn>(
+  f: (a: A, b: B, c?: C) => TReturn,
+): (c?: C) => (a: A, b: B) => TReturn;
+export function __opt_curry3r1<A, B, C, TReturn>(
+  f: (a: A, b: B, c: C) => TReturn,
+): (c: C) => (a: A, b: B) => TReturn;
+export function __opt_curry3r1<A, B, C, TReturn>(
+  f: (a: A, b: B, c: C) => TReturn,
+): (c: C) => (a: A, b: B) => TReturn {
+  return (c) => (a, b) => f(a, b, c);
+}
+
+export function __opt_curry3r2<A, B, C, TReturn>(
+  f: (a: A, b: B, c: C) => TReturn,
+): (b: B, c: C) => (a: A) => TReturn {
+  return (b, c) => (a) => f(a, b, c);
+}
+
+export function mkCurryRight<TL extends unknown[], TLast, TReturn>(
+  f: (...args: [...TL, TLast]) => TReturn,
+): (last: TLast) => (...args: TL) => TReturn {
+  return (last) => (...args) => f(...args, last);
 }
 
 export function ctor<TArgs extends unknown[], TReturn>(
@@ -162,17 +206,24 @@ export function pipe(...args: Array<f<unknown, unknown>>): f<unknown, unknown> {
   return curryThis(args.reduce, args, (acc, f) => f(acc));
 }
 
-export function compose<T, U, V>(f2: f<U, V>, f1: f<T, U>): f<T, V> {
-  return pipe(f1, f2);
+export function compose<T extends unknown[], U, V>(
+  f2: (...args: T) => U,
+  f1: f<U, V>,
+): (...args: T) => V;
+export function compose<T extends unknown[], U, V>(
+  f2: (...args: T) => U,
+  f1: f<U, V>,
+): (...args: T) => V {
+  return (...args) => f1(f2(...args));
 }
 
-export function tupThis<TThis, T extends unknown[], U>(
+export function tupfThis<TThis, T extends unknown[], U>(
   f: (this: TThis, ...args: T) => U,
   thisp: TThis,
 ): f<T, U> {
   return (args) => f.apply(thisp, args);
 }
 
-export function tup<T extends unknown[], U>(f: (...args: T) => U): f<T, U> {
-  return tupThis(f, undefined);
+export function tupf<T extends unknown[], U>(f: (...args: T) => U): f<T, U> {
+  return tupfThis(f, undefined);
 }

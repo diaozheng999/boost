@@ -1,10 +1,11 @@
-import type { Option } from "../fp";
-import type { Sexp } from "../sexp";
+import { json } from "../common/json";
+
+export type serialiser<T> = (value: T) => json;
 
 export interface Serialisable {
-  toSexp(): Sexp;
+  toJSON(): json;
 }
 
-export interface Deserialisable {
-  ofSexp<T>(): Option<T>;
+export interface PolySerialisable<T> {
+  toJSON(serialiseElement: serialiser<T>): json;
 }

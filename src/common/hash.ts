@@ -2,7 +2,7 @@
 /* eslint-disable no-magic-numbers */
 import { hash as HashSymbol, Hashable } from "../traits";
 import { int31, intOfNumber, uint31 } from "./int";
-import { defined, isUndefined } from "./jsopt";
+import { isNone, isSome } from "./option";
 
 export const basis = {
   array: 1485846169,
@@ -30,8 +30,8 @@ export function mul31(s: Uint8Array | Array<uint31>, basis: uint31): uint31 {
   return hash as uint31;
 }
 
-export function mul31s(s: string): uint31 {
-  let hash = 414595963;
+export function mul31s(s: string, basis = 414595963): uint31 {
+  let hash = basis;
   const len = s.length;
   for (let i = 0; i < len; ++i) {
     hash = (hash << 5) - hash + s.charCodeAt(i);
@@ -88,7 +88,7 @@ export function hashNumber(n: number): uint31 {
     return 541764791 as uint31;
   }
   const i = intOfNumber(n);
-  if (defined(i)) {
+  if (isSome(i)) {
     return hashInt(i);
   }
   return hashFloat(n);
@@ -123,7 +123,7 @@ export function hashObject(obj: object): uint31 {
   for (let i = 0; i < len; ++i) {
     const key = keys[i];
     const value = (obj as Record<string, unknown>)[keys[i]];
-    if (isUndefined(value)) {
+    if (isNone(value)) {
       continue;
     }
     hash ^= hashPair(key, value);
