@@ -9,7 +9,7 @@ export * from "./clamp";
 export * from "./f";
 export * from "./hash";
 export * from "./int";
-export { cons, nil } from "./list";
+export { cons, l, nil } from "./list";
 export type { list } from "./list";
 export { isNull, notNull, ofOption, toOption } from "./nullable";
 export type { nullable } from "./nullable";
