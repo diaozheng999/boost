@@ -1,16 +1,30 @@
-import { Equality } from "../traits";
-import { __opt_curry2r1 } from "./f";
+import { Equality, PolyEquality } from "../traits";
+import { __opt_curry3r1 } from "./f";
+import { hash as hashFn } from "./hash";
 
-export function is<T>(): Equality<T> {
-  return (l: T, r: T) => Object.is(l, r);
+/**
+ * Equality defined by `Object.is`
+ */
+export const is: PolyEquality = Object.is;
+
+/**
+ * Equality defined by `===`
+ */
+export function strictEqual<T>(l: T, r: T): boolean {
+  return l === r;
 }
 
-export function strictEqual<T>(): Equality<T> {
-  return (l: T, r: T) => l === r;
+function always() {
+  return true;
 }
 
+/**
+ * Equality that's statically checked to be always true. This is essentially
+ * a no-op that leverages on TypeScript's typechecking. Good for constants and
+ * single-item types such as `unit` or `null`.
+ */
 export function staticallyTypedAlways<T>(): Equality<T> {
-  return () => true;
+  return always;
 }
 
 /**
@@ -35,10 +49,19 @@ export function str(a: string, b: string): boolean {
   return !(a.length - b.length) && !result;
 }
 
+/**
+ * Boolean Equality
+ */
 export function bool(l: boolean, r: boolean): boolean {
   return l === r;
 }
 
+/**
+ * Number equality. Also tests subtypes of number such as int32 and int31.
+ * Takes care of `NaN`, i.e.
+ * 1. `eq.num(NaN, NaN) === true`
+ * 1. `eq.num(0, -0) === true`
+ */
 export function num<T extends number>(l: T, r: T): boolean {
   if (isNaN(l)) {
     return isNaN(r);
@@ -46,11 +69,22 @@ export function num<T extends number>(l: T, r: T): boolean {
   return l === r;
 }
 
-export function arrU<T extends unknown[]>(
-  l: T,
-  r: T,
-  eqf?: Equality<T[number]>,
-): boolean {
+/**
+ * Uses built-in hash function to determine if two values are identical. Note
+ * that since our hash function hashes to an integer, there can be chances of
+ * collision.
+ */
+export function hash<T>(l: T, r: T): boolean {
+  return hashFn(l) === hashFn(r);
+}
+
+/**
+ * Array equality (uncurried).
+ * @param l left element
+ * @param r right element
+ * @param eqf element equality function
+ */
+export function arrU<T>(l: T[], r: T[], eqf: Equality<T>): boolean {
   if (l.length !== r.length) {
     return false;
   }
@@ -71,9 +105,20 @@ export function arrU<T extends unknown[]>(
   return true;
 }
 
-export const arr = __opt_curry2r1(arrU);
+/**
+ * Array equality (curried).
+ * @param c element equality function
+ * @param a left element
+ * @param b right element
+ */
+export const arr = __opt_curry3r1(arrU);
 
+/**
+ * Undefined equality. Statically compared, at runtime always returns true.
+ */
 export const undef = staticallyTypedAlways<undefined>();
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+/**
+ * null equality. Statically compared, at runtime always returns true.
+ */
 export const null_ = staticallyTypedAlways<null>();

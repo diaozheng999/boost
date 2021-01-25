@@ -1,5 +1,10 @@
 import { brand as brandSymbol, Branded } from "../traits";
 
+/**
+ * Add a brand to element T
+ * @param element the element. Usually non-primitive.
+ * @param brand the brand. Usually symbol or string. Equatable with `===`.
+ */
 export function brand<T, TBrand>(
   element: T,
   brand: TBrand,
@@ -9,6 +14,13 @@ export function brand<T, TBrand>(
   return b;
 }
 
+/**
+ * Type checks if element `e` is branded `brand`. Uses `in` check, with `===`
+ * equality.
+ *
+ * @param e element to check. Usually non-primitive.
+ * @param brand brand to check. Usually symbol or string. Equatable with `===`.
+ */
 export function isBranded<T, TBrand>(
   e: unknown,
   brand: TBrand,

@@ -10,6 +10,10 @@ export function noop(): void {
   return;
 }
 
+export function always<T>(v: T): () => T {
+  return () => v;
+}
+
 function cimpl<TL extends unknown[], TR extends unknown[], TReturn, TThis>(
   f: (this: TThis, ...args: [...TL, ...TR]) => TReturn,
   thisParameter: TThis,
