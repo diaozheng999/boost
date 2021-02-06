@@ -13,5 +13,5 @@ export type measured = Branded<
 const SI_PREFIX = "YZEPTGMKmμnpfazy";
 
 function makeSIPrefix(measure: string): uom[] {
-  seq
+  seq;
 }

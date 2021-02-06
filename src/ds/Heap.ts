@@ -71,11 +71,12 @@ export class Heap<T, TPriority = number> implements Iterable<T> {
     const leftValue = this.heap[left]?.[0];
     const rightValue = this.heap[right]?.[0];
 
-    if (!leftValue && !rightValue) {
+    if (leftValue === undefined && rightValue === undefined) {
       return;
     }
 
     if (
+      rightValue !== undefined &&
       this.comparison(rightValue, leftValue) < 0 &&
       this.comparison(rightValue, this.heap[n][0]) < 0
     ) {
