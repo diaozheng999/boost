@@ -1,12 +1,18 @@
 import { isNone, option } from "../common";
+import { Comparison } from "../traits";
 
-export type HeapNode<T> = [priority: number, value: T];
+export type HeapNode<T, TPriority> = [priority: TPriority, value: T];
 
 /** Max Heap */
-export class Heap<T> implements Iterable<T> {
-  heap: Array<HeapNode<T>> = [];
+export class Heap<T, TPriority = number> implements Iterable<T> {
+  heap: Array<HeapNode<T, TPriority>> = [];
+  comparison: Comparison<TPriority>;
 
-  push(node: T, priority: number): void {
+  constructor(cmp: Comparison<TPriority>) {
+    this.comparison = cmp;
+  }
+
+  push(node: T, priority: TPriority): void {
     this.heap.push([priority, node]);
     this.#heapifyUp(this.heap.length - 1);
   }
@@ -28,15 +34,15 @@ export class Heap<T> implements Iterable<T> {
     return value[1];
   }
 
-  copy(): Heap<T> {
-    const heap = new Heap<T>();
+  copy(): Heap<T, TPriority> {
+    const heap = new Heap<T, TPriority>(this.comparison);
     for (const val of this.heap) {
       heap.heap.push(val);
     }
     return heap;
   }
 
-  peek(): option<HeapNode<T>> {
+  peek(): option<HeapNode<T, TPriority>> {
     if (!this.heap.length) {
       return;
     }
@@ -48,7 +54,7 @@ export class Heap<T> implements Iterable<T> {
       return;
     }
     const parent = (n / 2) | 0;
-    if (this.heap[n][0] > this.heap[parent][0]) {
+    if (this.comparison(this.heap[n][0], this.heap[parent][0]) < 0) {
       this.#swap(n, parent);
       this.#heapifyUp(parent);
     }
@@ -69,10 +75,13 @@ export class Heap<T> implements Iterable<T> {
       return;
     }
 
-    if (rightValue > leftValue && rightValue > this.heap[n][0]) {
+    if (
+      this.comparison(rightValue, leftValue) < 0 &&
+      this.comparison(rightValue, this.heap[n][0]) < 0
+    ) {
       this.#swap(right, n);
       this.#heapifyDown(right);
-    } else if (leftValue > this.heap[n][0]) {
+    } else if (leftValue < this.heap[n][0]) {
       this.#swap(left, n);
       this.#heapifyDown(left);
     }

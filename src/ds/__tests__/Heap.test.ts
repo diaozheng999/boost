@@ -9,11 +9,11 @@ describe("order", () => {
     heap.push(4, 4);
     heap.push(5, 5);
 
-    expect(heap.pop()).toBe(5);
-    expect(heap.pop()).toBe(4);
-    expect(heap.pop()).toBe(3);
-    expect(heap.pop()).toBe(2);
     expect(heap.pop()).toBe(1);
+    expect(heap.pop()).toBe(2);
+    expect(heap.pop()).toBe(3);
+    expect(heap.pop()).toBe(4);
+    expect(heap.pop()).toBe(5);
     expect(heap.pop()).toBeUndefined();
   });
 
@@ -25,11 +25,11 @@ describe("order", () => {
     heap.push(2, 2);
     heap.push(1, 1);
 
-    expect(heap.pop()).toBe(5);
-    expect(heap.pop()).toBe(4);
-    expect(heap.pop()).toBe(3);
-    expect(heap.pop()).toBe(2);
     expect(heap.pop()).toBe(1);
+    expect(heap.pop()).toBe(2);
+    expect(heap.pop()).toBe(3);
+    expect(heap.pop()).toBe(4);
+    expect(heap.pop()).toBe(5);
     expect(heap.pop()).toBeUndefined();
   });
 });
