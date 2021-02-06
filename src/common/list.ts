@@ -1,4 +1,3 @@
-import { List } from ".";
 import {
   Branded,
   DeserialisationOutcome,
@@ -260,5 +259,5 @@ export function filterU<T>(l: list<T>, predicate: Predicate<T>): list<T> {
 export const filter = __opt_curry2r1(filterU);
 
 export function l<T>(...args: T[]): list<T> {
-  return List.ofArray(args);
+  return ofArray(args);
 }
