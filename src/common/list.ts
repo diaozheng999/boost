@@ -11,7 +11,7 @@ import { __opt_curry2r1 } from "./f";
 import { json } from "./json";
 import { option } from "./option";
 
-const nil_ = Symbol("boost/nil");
+const nil_ = 0;
 const cons__ = Symbol("boost/cons");
 
 interface Cons<T> {

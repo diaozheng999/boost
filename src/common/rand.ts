@@ -74,7 +74,7 @@ export function choice<T>(value: T[] | string): Gen<T> {
   return t(randint(value.length), (i) => value[i]) as Gen<T>;
 }
 
-export function bernolli(p: number): Gen<number> {
+export function bernoulli(p: number): Gen<number> {
   return (gen: UGen = math) => {
     for (let i = 0; ; ++i) {
       if (gen() < p) {

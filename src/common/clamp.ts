@@ -13,6 +13,10 @@ export function clampU(value: number, lo = 0, hi = 1): number {
   return Math.min(Math.max(lo, value), hi);
 }
 
+export function clampV(lo = 0, hi = 1, value: number): number {
+  return clampU(value, lo, hi);
+}
+
 /**
  * Clamps a number between `lo` and `hi` (inclusive).
  *

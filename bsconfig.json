@@ -3,11 +3,12 @@
   "name": "boost",
   "namespace": true,
   "sources": {
-    "dir": "src/ml",
+    "dir": "ml",
     "subdirs": true
   },
   "package-specs": {
     "in-source": false,
-    "module": "commonjs"
+    "module": "commonjs",
+    "suffix": ".bs.js"
   }
 }
