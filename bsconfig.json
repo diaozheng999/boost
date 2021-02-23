@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
+  "name": "boost",
+  "namespace": true,
+  "sources": {
+    "dir": "src/ml",
+    "subdirs": true
+  },
+  "package-specs": {
+    "in-source": false,
+    "module": "commonjs"
+  }
+}

@@ -6,7 +6,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prebuild": "prettier --write src",
-    "build": "tsc",
+    "build": "tsc && bsb -make-world",
     "postbuild": "node build_tools/build.js",
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx .",
@@ -31,6 +31,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
+    "bs-platform": "^9.0.1",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",

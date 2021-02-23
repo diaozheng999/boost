@@ -15,15 +15,15 @@ const nil_ = Symbol("boost/nil");
 const cons__ = Symbol("boost/cons");
 
 interface Cons<T> {
-  h: T;
-  t: list<T>;
+  hd: T;
+  tl: list<T>;
 }
 
 export type list<T> = typeof nil_ | Branded<Cons<T>, typeof cons__>;
 export type t<T> = list<T>;
 
-export function cons<T, U extends T>(h: T, t: list<U>): list<T> {
-  return brand({ h, t }, cons__);
+export function cons<T, U extends T>(hd: T, tl: list<U>): list<T> {
+  return brand({ hd, tl }, cons__);
 }
 
 export const cons_ = __opt_curry2r1(cons);
@@ -34,21 +34,21 @@ export function append<T>(left: list<T>, right: list<T>): list<T> {
   if (left === nil_) {
     return right;
   }
-  return cons(left.h, append(left.t, right));
+  return cons(left.hd, append(left.tl, right));
 }
 
 export function rev<T>(list: list<T>): list<T> {
   let nlist: list<T> = nil;
-  for (let l = list; l !== nil_; l = l.t) {
-    nlist = cons(l.h, nlist);
+  for (let l = list; l !== nil_; l = l.tl) {
+    nlist = cons(l.hd, nlist);
   }
   return nlist;
 }
 
 export function revAppend<T>(left: list<T>, right: list<T>): list<T> {
   let nlist: list<T> = right;
-  for (let l = left; l !== nil_; l = l.t) {
-    nlist = cons(l.h, nlist);
+  for (let l = left; l !== nil_; l = l.tl) {
+    nlist = cons(l.hd, nlist);
   }
   return nlist;
 }
@@ -60,7 +60,7 @@ export function mapU<T, U extends T, V>(
   if (list === nil_) {
     return nil_;
   }
-  return cons(mapper(list.h), mapU(list.t, mapper));
+  return cons(mapper(list.hd), mapU(list.tl, mapper));
 }
 
 export type Mapper = <T, U>(
@@ -74,8 +74,8 @@ export function revMapU<T, U extends T, V>(
   mapper: (value: T) => V,
 ): list<V> {
   let mapped: list<V> = nil;
-  for (let l = list; l !== nil_; l = l.t) {
-    mapped = cons(mapper(l.h), mapped);
+  for (let l = list; l !== nil_; l = l.tl) {
+    mapped = cons(mapper(l.hd), mapped);
   }
   return mapped;
 }
@@ -105,8 +105,8 @@ export function reduceU<T, U extends T, V>(
   init: V,
 ): V {
   let acc = init;
-  for (let l = list; l !== nil_; l = l.t) {
-    acc = reducer(l.h, acc);
+  for (let l = list; l !== nil_; l = l.tl) {
+    acc = reducer(l.hd, acc);
   }
   return acc;
 }
@@ -130,11 +130,11 @@ export function eqU<T, U extends T>(
     if (b === nil_) {
       return false;
     }
-    if (!eqf(a.h, b.h)) {
+    if (!eqf(a.hd, b.hd)) {
       return false;
     }
-    a = a.t;
-    b = b.t;
+    a = a.tl;
+    b = b.tl;
   }
 
   return b === nil_;
@@ -148,8 +148,8 @@ export const eq: PolyEquality = (eqf) => (l, r) => eqU(l, r, eqf);
 
 export function serialiseU<T>(list: list<T>, serialiser: serialiser<T>): json {
   const exp: json[] = [];
-  for (let i = list; i !== nil_; i = i.t) {
-    exp.push(serialiser(i.h));
+  for (let i = list; i !== nil_; i = i.tl) {
+    exp.push(serialiser(i.hd));
   }
   return exp;
 }
@@ -180,8 +180,8 @@ export function eachU<T, U extends T>(
   list: list<U>,
   e: (value: T) => void,
 ): void {
-  for (let l = list; l !== nil_; l = l.t) {
-    e(l.h);
+  for (let l = list; l !== nil_; l = l.tl) {
+    e(l.hd);
   }
 }
 
@@ -197,8 +197,8 @@ export function iter<T>(list: list<T>): IterableIterator<T> {
       if (current === nil_) {
         return { done: true, value: current };
       }
-      const value = current.h;
-      current = current.t;
+      const value = current.hd;
+      current = current.tl;
       return { value };
     },
     [Symbol.iterator]: () => iter(list),
@@ -207,8 +207,8 @@ export function iter<T>(list: list<T>): IterableIterator<T> {
 
 export function toArray<T>(list: list<T>): T[] {
   const arr: T[] = [];
-  for (let l = list; l !== nil_; l = l.t) {
-    arr.push(l.h);
+  for (let l = list; l !== nil_; l = l.tl) {
+    arr.push(l.hd);
   }
   return arr;
 }
@@ -221,39 +221,39 @@ export function head<T>(l: list<T>): option<T> {
   if (l === nil_) {
     return;
   }
-  return l.h;
+  return l.hd;
 }
 
 export function headExn<T>(l: list<T>): T {
   if (l === nil_) {
     throw new Error(`Empty List`);
   }
-  return l.h;
+  return l.hd;
 }
 
 export function tail<T>(l: list<T>): option<list<T>> {
   if (l === nil_) {
     return;
   }
-  return l.t;
+  return l.tl;
 }
 
 export function tailExn<T>(l: list<T>): list<T> {
   if (l === nil_) {
     throw new Error(`Empty List`);
   }
-  return l.t;
+  return l.tl;
 }
 
 export function filterU<T>(l: list<T>, predicate: Predicate<T>): list<T> {
   if (l === nil_) {
     return nil_;
   }
-  const { h, t } = l;
-  if (predicate(h)) {
-    return cons(h, filterU(t, predicate));
+  const { hd, tl } = l;
+  if (predicate(hd)) {
+    return cons(hd, filterU(tl, predicate));
   }
-  return filterU(t, predicate);
+  return filterU(tl, predicate);
 }
 
 export const filter = __opt_curry2r1(filterU);

@@ -1,6 +1,6 @@
 import { eq } from "../common";
 
-function rnd(n: number) {
+export function rnd(n: number) {
   while (true) {
     const p = Math.floor(Math.random() * n);
     if (p < n) {
@@ -9,7 +9,7 @@ function rnd(n: number) {
   }
 }
 
-function permute(n: number): number[] {
+export function permute(n: number): number[] {
   if (n === 0) {
     return [];
   }
@@ -18,7 +18,7 @@ function permute(n: number): number[] {
   return [n0, ...n1];
 }
 
-function perfOne(
+export function perfOne(
   label: string,
   types: Record<string, () => void>,
   ntries: number,
@@ -33,7 +33,7 @@ function perfOne(
   }
 }
 
-function perf(
+export function perf(
   label: string,
   types: Record<string, () => void>,
   ntries: number,
@@ -53,8 +53,6 @@ function perf(
     }
   }
 }
-
-const f = (a: number, b: number) => a + b;
 
 perf(
   "compare",
