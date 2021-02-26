@@ -2,8 +2,8 @@
   "name": "boost",
   "version": "0.1.0",
   "description": "Functional Library for TypeScript",
-  "main": "dist/cjs/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "lib/js/index.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
     "prebuild": "prettier --write src",
     "build": "tsc && bsb -make-world",
