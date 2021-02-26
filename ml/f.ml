@@ -19,4 +19,3 @@ external compose: ('a -> 'b) -> ('b -> 'c) -> ('a -> 'c) = "compose" [@@bs.modul
 external uncurry: ('a -> 'b -> 'c) -> ('a -> 'b -> 'c [@bs]) = "uncurry2" [@@bs.module "../common/f.js"]
 
 external uncurryRight: ('a -> 'b -> 'c) -> ('b -> 'a -> 'c [@bs]) = "uncurry2r1" [@@bs.module "../common/f.js"]
-

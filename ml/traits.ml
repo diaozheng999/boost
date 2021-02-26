@@ -6,9 +6,11 @@ type ord =
 
 type 'a abs_compare = 'a -> 'a -> abs_ord [@bs]
 
+type 'a compare = 'a -> 'a -> ord
+
 type 'a compare_to = 'a -> abs_ord
 
-type 'a eq = 'a -> 'a -> bool [@bs]
+type 'a abs_eq = 'a -> 'a -> bool [@bs]
 
 type 'a predicate = 'a -> bool [@bs]
 

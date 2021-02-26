@@ -18,7 +18,7 @@ external ofArray: array<'a> => t<'a> = "ofArray"
 external compare: abs_compare<'a> => abs_compare<t<'a>> = "compare"
 
 @bs.module("../ds/LinkedList.js") @bs.scope("LinkedList")
-external eq: eq<'a> => eq<t<'a>> = "eq"
+external eq: abs_eq<'a> => abs_eq<t<'a>> = "eq"
 
 @bs.send external head: t<'a> => option<node<'a>> = "head"
 @bs.send external tail: t<'a> => option<node<'a>> = "tail"

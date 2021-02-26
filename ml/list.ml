@@ -8,7 +8,7 @@ external revMap: 'a list -> f:('a -> 'b [@bs.uncurry]) -> 'b list = "revMapU" [@
 external ofArray: 'a array -> 'a list = "ofArray" [@@bs.module "../common/list.js"]
 external ofArrayRev: 'a array -> 'a list = "ofArrayRev" [@@bs.module "../common/list.js"]
 external reduce: 'a list -> f:('a -> 'b -> 'b [@bs.uncurry]) -> acc:'b -> 'b = "reduceU" [@@bs.module "../common/list.js"]
-external eq: 'a eq -> 'a list eq = "eq" [@@bs.module "../common/list.js"]
+external eq: 'a abs_eq -> 'a list abs_eq = "eq" [@@bs.module "../common/list.js"]
 external serialise: 'a list -> e:'a serialiser -> Js.Json.t = "serialiseU" [@@bs.module "../common/list.js"]
 (* TODO: deserialise(U) *)
 

@@ -1,17 +1,22 @@
 open Traits
+open Boost_internal_re
 
-external is: 'a eq = "is" [@@bs.val] [@@bs.scope "Object"]
+external is: 'a abs_eq = "is" [@@bs.val] [@@bs.scope "Object"]
 
-external always: 'a eq = "staticallyTypedAlways" [@@bs.module "../common/eq.js"]
+external always: 'a abs_eq = "staticallyTypedAlways" [@@bs.module "../common/eq.js"]
 
-external str: string eq = "str" [@@bs.module "../common/eq.js"]
+external str: string abs_eq = "str" [@@bs.module "../common/eq.js"]
 
-external bool: bool eq = "bool" [@@bs.module "../common/eq.js"]
+external bool: bool abs_eq = "bool" [@@bs.module "../common/eq.js"]
 
-external int: int eq = "num" [@@bs.module "../common/eq.js"]
+external int: int abs_eq = "num" [@@bs.module "../common/eq.js"]
 
-external num: float eq = "num" [@@bs.module "../common/eq.js"]
+external num: float abs_eq = "num" [@@bs.module "../common/eq.js"]
 
-external hash: 'a eq = "hash" [@@bs.module "../common/eq.js"]
+external hash: 'a abs_eq = "hash" [@@bs.module "../common/eq.js"]
 
-external arr: 'a eq -> 'a array eq = "arr" [@@bs.module "../common/eq.js"]
+external arr: 'a abs_eq -> 'a array abs_eq = "arr" [@@bs.module "../common/eq.js"]
+
+let exec abs_eq a b = c abs_eq a b
+
+let abs eq = fun [@bs] a b -> eq a b
