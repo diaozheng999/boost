@@ -1,5 +1,4 @@
 open Traits
-open Boost_internal_re
 
 external is: 'a abs_eq = "is" [@@bs.val] [@@bs.scope "Object"]
 
@@ -17,6 +16,6 @@ external hash: 'a abs_eq = "hash" [@@bs.module "../common/eq.js"]
 
 external arr: 'a abs_eq -> 'a array abs_eq = "arr" [@@bs.module "../common/eq.js"]
 
-let exec abs_eq a b = c abs_eq a b
+let exec abs_eq a b = abs_eq a b [@bs]
 
 let abs eq = fun [@bs] a b -> eq a b

@@ -1,5 +1,4 @@
 open Traits
-open Boost_internal_re
 
 external int: int abs_compare = "int" [@@bs.module "../common/compare.js"]
 external num: float abs_compare = "num" [@@bs.module "../common/compare.js"]
@@ -11,6 +10,6 @@ external arr_: 'a array -> 'a array -> 'a abs_compare -> abs_ord = "arr" [@@bs.m
 
 let arr compareElement = fun [@bs] l r -> arr_ l r compareElement
 
-let exec abs_cmp a b = ordFromJs (c abs_cmp a b)
+let exec abs_cmp a b = ordFromJs (abs_cmp a b [@bs])
 
 let abs cmp = fun [@bs] a b -> ordToJs (cmp a b)
