@@ -1,24 +1,16 @@
 import { LinkedList, LinkedListNode } from "../ds/LinkedList";
 import { DeferredTask } from "./DeferredTask";
 
-export class QueuedSemaphoreTask extends DeferredTask<
-  void,
-  LinkedListNode<QueuedSemaphoreTask>
-> {
-  private semState: LinkedListNode<QueuedSemaphoreTask>;
-  private semList: LinkedList<QueuedSemaphoreTask>;
+export type QueuedSemaphoreTask = DeferredTask<void>;
 
-  constructor(list: LinkedList<QueuedSemaphoreTask>) {
-    super();
-    this.semState = list.addToEnd(this);
-    this.semList = list;
-  }
-
-  protected defer(): LinkedListNode<QueuedSemaphoreTask> {
-    return this.semState;
-  }
-
-  protected onInterrupt(): void {
-    this.semList.removeNode(this.state);
-  }
+export function QueuedSemaphoreTask(
+  queue: LinkedList<QueuedSemaphoreTask>,
+): QueuedSemaphoreTask {
+  // eslint-disable-next-line prefer-const
+  let node: LinkedListNode<QueuedSemaphoreTask>;
+  const task = DeferredTask<void>(() => {
+    queue.removeNode(node);
+  });
+  node = queue.addToEnd(task);
+  return task;
 }

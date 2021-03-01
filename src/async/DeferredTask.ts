@@ -1,18 +1,13 @@
+import { Deferred } from "./Deferred";
 import { Task } from "./Task";
 
-export abstract class DeferredTask<T, TState> extends Task<T, TState, []> {
-  public declare resolve: (value: T | PromiseLike<T>) => void;
-  public declare reject: (reason?: unknown) => void;
+export type DeferredTask<T> = Deferred<T> & Task<T>;
 
-  protected abstract defer(): TState;
-
-  protected exec(): [Promise<T>, TState] {
-    return [
-      new Promise((res, rej) => {
-        this.resolve = res;
-        this.reject = rej;
-      }),
-      this.defer(),
-    ];
-  }
+export function DeferredTask<T>(onInterrupt?: () => void): DeferredTask<T> {
+  const inner = Deferred<T>();
+  const interrupt = () => {
+    onInterrupt?.();
+    inner.reject;
+  };
+  return Object.assign(inner, { interrupt }) as DeferredTask<T>;
 }

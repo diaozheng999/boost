@@ -4,7 +4,7 @@ type 'a deferred
 
 type 'a t = 'a deferred
 
-external make: unit -> 'a deferred = "Deferred" [@@bs.new][@@bs.module "../async/Deferred.js"]
+external make: unit -> 'a deferred = "Deferred" [@@bs.module "../async/Deferred.js"]
 external resolve: 'a deferred -> by:'a -> unit = "resolve" [@@bs.send]
 external resolveBy: 'a deferred -> by:'a promise -> unit = "resolve" [@@bs.send]
 external resolveBy': 'a deferred -> by:'a deferred -> unit = "resolve" [@@bs.send]

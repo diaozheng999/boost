@@ -1,8 +1,9 @@
+import { compare } from "../../common";
 import { Heap } from "../Heap";
 
 describe("order", () => {
   test("insertion", () => {
-    const heap = new Heap<number>();
+    const heap = new Heap<number>(compare.int);
     heap.push(1, 1);
     heap.push(2, 2);
     heap.push(3, 3);
@@ -18,7 +19,7 @@ describe("order", () => {
   });
 
   test("insertion 2", () => {
-    const heap = new Heap<number>();
+    const heap = new Heap<number>(compare.int);
     heap.push(5, 5);
     heap.push(4, 4);
     heap.push(3, 3);
@@ -35,6 +36,6 @@ describe("order", () => {
 });
 
 test("pop empty", () => {
-  const heap = new Heap<number>();
+  const heap = new Heap<number>(compare.int);
   expect(heap.pop()).toBeUndefined();
 });

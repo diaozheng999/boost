@@ -18,7 +18,7 @@ export class Semaphore {
       --this.value;
       return Promise.resolve();
     }
-    const node = new QueuedSemaphoreTask(this.queue);
+    const node = QueuedSemaphoreTask(this.queue);
     return node;
   };
 
