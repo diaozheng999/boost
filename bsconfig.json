@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
-  "name": "boost",
+  "name": "yalib",
   "namespace": true,
   "sources": {
     "dir": "ml",

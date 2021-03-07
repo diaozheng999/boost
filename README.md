@@ -1,3 +1,3 @@
-# Encik
+# Yet Another Library
 
-API Tester, validator, test case generator.
+A JS Library, inspired by OCaml, with ReScript interop.

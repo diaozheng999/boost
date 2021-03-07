@@ -1,13 +1,13 @@
 {
-  "name": "boost",
-  "version": "0.1.0",
+  "name": "yalib",
+  "version": "0.1.0-unstable.0",
   "description": "Functional Library for TypeScript",
   "main": "lib/js/index.js",
   "types": "lib/types/index.d.ts",
   "scripts": {
     "prebuild": "prettier --write src",
     "build": "tsc && bsb -make-world",
-    "postbuild": "node build_tools/build.js",
+    "postbuild": "tsc --project tsconfig.commonjs.json",
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx .",
     "prepublishOnly": "npm run lint && npm run build"
