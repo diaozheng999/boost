@@ -1,6 +1,6 @@
 {
   "name": "yalib",
-  "version": "0.1.0-unstable.0",
+  "version": "0.1.0-unstable.1",
   "description": "Functional Library for TypeScript",
   "main": "lib/js/index.js",
   "types": "lib/types/index.d.ts",
