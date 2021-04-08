@@ -5,6 +5,7 @@ import * as Nullable from "./nullable";
 import * as Option from "./option";
 import * as rand from "./rand";
 
+export * from "./brand";
 export * from "./clamp";
 export * from "./f";
 export * from "./hash";

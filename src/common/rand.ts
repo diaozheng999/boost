@@ -127,3 +127,10 @@ export function pick<T>(gen: [gen: Gen<T>, p: number][]): Gen<T> {
 export function always<T>(value: T): Gen<T> {
   return () => value;
 }
+
+export function bind<T, U>(gen: Gen<T>, mapper: (value: T) => Gen<U>): Gen<U> {
+  return (ugen: UGen = math) => {
+    const staged = gen(ugen);
+    return mapper(staged)(ugen);
+  };
+}

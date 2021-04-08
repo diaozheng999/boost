@@ -16,6 +16,6 @@ external hash: 'a abs_eq = "hash" [@@bs.module "../../.."][@@bs.scope "common", 
 
 external arr: 'a abs_eq -> 'a array abs_eq = "arr" [@@bs.module "../../.."][@@bs.scope "common", "eq"]
 
-let exec abs_eq a b = abs_eq a b [@bs]
+val exec : 'a abs_eq -> 'a -> 'a -> bool
 
-let abs eq = fun [@bs] a b -> eq a b
+val abs : ('a -> 'a -> bool) -> 'a abs_eq

@@ -1,3 +1,5 @@
-external identity: 'a -> 'a = "identity" [@@bs.module "../common/f.js"]
+external identity : 'a -> 'a = "identity"
+  [@@bs.module "../../.."] [@@bs.scope "common"]
 
-external noop: unit -> unit = "noop" [@@bs.module "../common/f.js"]
+external noop : unit -> unit = "noop"
+  [@@bs.module "../../.."] [@@bs.scope "common"]

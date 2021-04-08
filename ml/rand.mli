@@ -30,11 +30,11 @@ external pick: ('a gen * float) array -> 'a gen = "pick" [@@bs.module "../common
 external always: 'a -> 'a gen = "always" [@@bs.module "../common/rand.js"]
 external bind: 'a gen -> f:('a -> 'b gen [@bs.uncurry]) -> 'b gen = "bind" [@@bs.module "../common/rand.js"]
 
-module Let_syntax = struct
+module Let_syntax : sig
   external return : 'a -> 'a gen = "always" [@@bs.module "../common/rand.js"]
   external map : 'a gen -> f:('a -> 'b [@bs.uncurry]) -> 'b gen = "t" [@@bs.module "../common/rand.js"]
   external bind : 'a gen -> f:('a -> 'b gen [@bs.uncurry]) -> 'b gen = "bind" [@@bs.module "../common/rand.js"]
-  let both a b = gen2 (a, b) ~collect:F.identity
+  val both : 'a gen -> 'b gen -> ('a * 'b) gen
 end
 
-let gen ?ugen g = g ugen
+val gen : ?ugen:ugen -> 'a gen -> 'a

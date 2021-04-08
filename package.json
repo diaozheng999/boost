@@ -1,9 +1,9 @@
 {
   "name": "yalib",
-  "version": "0.1.0-unstable.1",
+  "version": "0.1.0-unstable.2",
   "description": "Functional Library for TypeScript",
-  "main": "lib/js/index.js",
-  "types": "lib/types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "prebuild": "prettier --write src",
     "build": "tsc && bsb -make-world",
