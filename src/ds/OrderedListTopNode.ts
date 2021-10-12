@@ -113,12 +113,17 @@ export class OrderedListTopNode<T> {
   public prev: OrderedListTopNode<T>;
   public next: OrderedListTopNode<T>;
   public id: number;
+  public brand?: unknown;
 
-  constructor({ prev, next, id, value }: OrderedListTopNodeCtor<T>) {
+  constructor(
+    { prev, next, id, value }: OrderedListTopNodeCtor<T>,
+    brand?: unknown,
+  ) {
     this.value = value;
     this.prev = prev ?? this;
     this.next = next ?? this;
     this.id = id;
+    this.brand = brand;
   }
 
   public add(value: T): OrderedListTopNode<T> {
